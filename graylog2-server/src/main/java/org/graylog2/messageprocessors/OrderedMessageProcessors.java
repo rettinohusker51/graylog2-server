@@ -32,6 +32,7 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -57,8 +58,8 @@ public class OrderedMessageProcessors implements Iterable<MessageProcessor> {
         this.classNameOrdering = Ordering.from(String.CASE_INSENSITIVE_ORDER);
 
         // load existing order from cluster state
-        final MessageProcessorOrder order = clusterConfigService.get(MessageProcessorOrder.class);
-        sortProcessorChain(order);
+        final Optional<MessageProcessorOrder> order = clusterConfigService.get(MessageProcessorOrder.class);
+        sortProcessorChain(order.orElse(null));
     }
 
     private void sortProcessorChain(MessageProcessorOrder order) {
